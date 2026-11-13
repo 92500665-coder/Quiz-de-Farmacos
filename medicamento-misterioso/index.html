@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>¿Qué tanto sabes de medicamentos?</title>
+<style>
+:root{--bg:#edf7ed;--accent:#568c61;--dark:#3d7049;--soft:#e1f1e2;--border:#b9d5bd}
+*{box-sizing:border-box}body{margin:0;padding:24px 14px;background:var(--bg);color:#302833;font:16px Arial,sans-serif;transition:background .2s}
+main{width:min(100%,720px);margin:auto;padding:clamp(18px,5vw,32px);border-radius:22px;background:#fff;box-shadow:0 10px 32px #4320391a}
+header{text-align:center}h1{display:flex;align-items:center;justify-content:center;gap:12px;margin:0;color:var(--accent);font-size:clamp(1.25rem,4.2vw,2.2rem)}.svg-defs{position:absolute;width:0;height:0;overflow:hidden}.title-cat{flex:0 0 auto;width:clamp(42px,8vw,64px);height:clamp(42px,8vw,64px)}h1 .title-cat:last-child,.question-title .question-kitten:last-child{transform:scaleX(-1)}.intro{line-height:1.5}
+.themes,.actions{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin:16px 0}
+button{font:inherit;cursor:pointer}.theme,.action{padding:10px 15px;border:2px solid var(--border);border-radius:12px;background:white;color:#302833}
+.theme[aria-pressed=true]{border-color:var(--accent);box-shadow:0 0 0 2px var(--soft)}
+.state{display:flex;justify-content:space-between;gap:10px;color:var(--dark);font-weight:bold}.track{height:12px;margin:8px 0;border-radius:20px;background:#ece8eb;overflow:hidden}.track div{height:100%;width:0;background:var(--accent);transition:width .2s}
+.image{display:grid;min-height:140px;margin:20px 0;place-items:center;border:1px solid var(--border);border-radius:18px;background:linear-gradient(135deg,var(--soft),#fff 80%)}.image svg{width:110px;height:110px;color:var(--accent)}
+h2{font-size:clamp(1.1rem,4vw,1.4rem);line-height:1.45}.question-title{display:grid;grid-template-columns:42px minmax(0,1fr) 42px;align-items:center;gap:6px;text-align:center}.question-kitten{width:40px;height:44px}.question-title span{min-width:0}#options{display:grid;gap:10px}.option{width:100%;padding:13px 15px;border:2px solid var(--border);border-radius:13px;background:#fff;text-align:left;line-height:1.4}.option:hover:not(:disabled),.option[aria-pressed=true]{border-color:var(--accent);background:var(--soft)}.option.correct{border-color:#278345;background:#eaf7ed}.option.wrong{border-color:#b42318;background:#fff0ef}.option:disabled{opacity:1;color:inherit}
+.action{border:0;background:var(--dark);color:white;font-weight:bold}.action:disabled{opacity:.5;cursor:not-allowed}button:focus-visible{outline:3px solid #222;outline-offset:3px}
+#result{min-height:1.5em;margin:18px 0 8px;font-weight:bold;line-height:1.5}#explanation{min-height:1.5em;line-height:1.5}#musicStatus:empty{display:none}.notice{margin-top:22px;padding:12px;border-radius:12px;background:#f3f8f3;color:#435347;font-size:.9rem;line-height:1.5}[hidden]{display:none!important}
+.reaction{display:flex;align-items:center;justify-content:center;gap:14px;margin:12px auto;padding:12px;border-radius:16px;background:var(--soft);text-align:left}.reaction svg{flex:0 0 96px;width:96px;height:96px}.reaction-message{color:var(--dark);font-size:1.05rem;font-weight:bold;line-height:1.4}
+.finish-card{position:relative;overflow:hidden;margin:12px 0;padding:clamp(20px,5vw,36px);border:2px solid var(--border);border-radius:24px;background:radial-gradient(circle at 50% 20%,#fff 0,var(--soft) 70%);text-align:center}.confetti{position:absolute;inset:0;overflow:hidden;pointer-events:none}.confetti-piece{position:absolute;top:-18px;width:10px;height:15px;border-radius:3px;background:var(--piece-color);animation:confetti-fall var(--fall-duration) var(--fall-delay) ease-in infinite}.confetti-piece:nth-child(3n){width:8px;height:8px;border-radius:50%}.finish-content{position:relative;z-index:1}.finish-cat{display:block;width:min(220px,55vw);height:auto;margin:0 auto 8px;filter:drop-shadow(0 6px 5px #365b3c2b)}.finish-title{margin:8px 0;color:var(--dark);font-size:clamp(1.5rem,5vw,2.4rem);line-height:1.25}.finish-score{display:inline-block;margin:12px 0;padding:10px 18px;border:2px solid var(--border);border-radius:999px;background:#fff;color:var(--dark);font-size:1.3rem;font-weight:bold}.finish-message{font-size:1.05rem;line-height:1.5}.finish-restart{margin-top:8px}
+@keyframes confetti-fall{0%{transform:translate3d(0,-20px,0) rotate(0);opacity:0}12%{opacity:1}100%{transform:translate3d(var(--drift),430px,0) rotate(660deg);opacity:0}}
+@media(prefers-reduced-motion:reduce){*{transition-duration:.01ms!important}}
+@media(prefers-reduced-motion:reduce){.confetti-piece{animation:none;top:var(--resting-top);opacity:.8}}
+</style>
+</head>
+<body>
+<svg class="svg-defs" aria-hidden="true" focusable="false"><symbol id="nurse-kitten" viewBox="0 0 80 90"><path d="M14 35 11 12l20 14a31 31 0 0 1 18 0l20-14-3 24c8 9 7 22-1 30-6 7-15 10-25 10S21 72 15 65c-8-8-9-21-1-30Z" fill="#fff4e8" stroke="#568c61" stroke-width="3" stroke-linejoin="round"/><path d="M24 21Q40 5 56 21l-2 8a38 38 0 0 0-28 0Z" fill="#fff" stroke="#568c61" stroke-width="3" stroke-linejoin="round"/><path d="M40 12v11m-5-5h10" stroke="#568c61" stroke-width="3" stroke-linecap="round"/><path d="M26 43q4-7 8 0m12 0q4-7 8 0" fill="none" stroke="#302833" stroke-width="3" stroke-linecap="round"/><ellipse cx="22" cy="51" rx="5" ry="3" fill="#f4b4af" opacity=".8"/><ellipse cx="58" cy="51" rx="5" ry="3" fill="#f4b4af" opacity=".8"/><path d="m37 49 3 3 3-3Z" fill="#e58a8a" stroke="#302833" stroke-width="1.2"/><path d="M40 52q-5 7-10 2m10-2q5 7 10 2M24 51l-11-2m11 7-11 2m43-7 11-2m-11 7 11 2" fill="none" stroke="#568c61" stroke-width="1.7" stroke-linecap="round"/><path d="M24 72q16-10 32 0v12H24Z" fill="#d5ead8" stroke="#568c61" stroke-width="3"/><path d="M40 73v10m-4-5h8" stroke="#568c61" stroke-width="2.5" stroke-linecap="round"/></symbol></svg>
+<main>
+<header><h1><svg class="title-cat" aria-hidden="true" focusable="false"><use href="#nurse-kitten"></use></svg><span>¿QUÉ TANTO SABES DE MEDICAMENTOS?</span><svg class="title-cat" aria-hidden="true" focusable="false"><use href="#nurse-kitten"></use></svg></h1><p class="intro">30 preguntas para poner a prueba tus conocimientos de enfermería.</p></header>
+<nav class="themes" aria-label="Control de música"><button class="theme" id="music" type="button" aria-pressed="false">🎵 Activar música</button></nav>
+<p id="musicStatus" role="status" aria-live="polite"></p>
+<section id="quiz" aria-label="Cuestionario">
+<div class="state"><span id="counter"></span><span id="score"></span></div>
+<div class="track" role="progressbar" aria-label="Progreso" aria-valuemin="0" aria-valuemax="30" aria-valuenow="1"><div id="fill"></div></div>
+<div class="image" id="image" aria-hidden="true"></div><h2 id="questionTitle" class="question-title" tabindex="-1"><svg class="question-kitten" aria-hidden="true" focusable="false"><use href="#nurse-kitten"></use></svg><span id="question"></span><svg class="question-kitten" aria-hidden="true" focusable="false"><use href="#nurse-kitten"></use></svg></h2>
+<div id="options" role="group" aria-label="Opciones de respuesta"></div>
+<p id="result" role="status" aria-live="polite"></p><div id="reaction" class="reaction" hidden><svg id="reactionCat" viewBox="0 0 80 90"></svg><p id="reactionText" class="reaction-message"></p></div><p id="explanation"></p>
+<div class="actions"><button class="action" id="check" disabled>Comprobar</button><button class="action" id="next" hidden>Siguiente pregunta →</button></div>
+</section>
+<section id="finish" hidden aria-live="polite"></section>
+<aside class="notice">Material educativo: no sustituye la prescripción, la valoración clínica ni los protocolos de tu institución. Verifica siempre la información específica del paciente y del medicamento.</aside>
+</main>
+<script>
+const raw=[
+["Antes de administrar insulina glargina, ¿qué principio es importante recordar?","Mezclar siempre con insulina regular|En general, no mezclar con otras insulinas; verificar orden y protocolo|Administrar únicamente por vía IV|No revisar glucemia",1,"La glargina es una insulina basal y, por lo general, no debe mezclarse con otras insulinas."],
+["Una persona que toma warfarina presenta sangrado de encías nuevo. ¿Qué corresponde hacer?","Esperar a la siguiente cita|Valorar, comunicar y revisar indicaciones clínicas|Duplicar la dosis|Suspender todos sus medicamentos",1,"El sangrado puede indicar una complicación; no ajustes ni suspendas dosis por cuenta propia."],
+["Antes de administrar digoxina, ¿qué valoración es especialmente relevante?","Medir la frecuencia apical durante un minuto y aplicar parámetros indicados|Medir solo temperatura|Preguntar si tomó café|Revisar solo la saturación",0,"Valora la frecuencia apical y sigue los parámetros de retención establecidos."],
+["¿Cuál afirmación sobre el cloruro de potasio concentrado es correcta?","Puede administrarse como bolo IV sin diluir|Nunca se administra IV directo; se diluye según protocolo|Se administra por cualquier vía|No requiere verificar concentración",1,"Es un medicamento de alto riesgo: nunca se administra IV directo."],
+["Con heparina no fraccionada, ¿qué se debe vigilar según orden y protocolo?","Signos de sangrado y parámetro de coagulación indicado|Solo temperatura|Únicamente glucemia|Agudeza visual",0,"Vigila sangrado y los estudios de coagulación prescritos."],
+["Después de administrar un opioide, ¿qué hallazgo requiere atención prioritaria?","Somnolencia leve aislada|Dificultad para despertar o respiración lenta|Boca seca|Menos apetito",1,"Sedación profunda y respiración lenta pueden indicar depresión respiratoria."],
+["La persona tuvo hinchazón de labios tras penicilina y tiene orden de amoxicilina. ¿Qué haces?","Administrarla porque la dosis es distinta|Aclarar la reacción, retener hasta indicaciones y notificar|Dar con comida|Administrar más tarde sin consultar",1,"La hinchazón puede ser una reacción alérgica grave; aclara y comunica antes de administrar."],
+["Una persona usa metformina y tiene un estudio con contraste. ¿Cuál es la mejor práctica?","Suspenderla siempre una semana|Seguir indicación y protocolo considerando función renal y estudio|Duplicar la dosis después|Ignorar el estudio",1,"La conducta depende de factores clínicos y guías locales; no modifiques sin indicación."],
+["Antes de administrar nitroglicerina sublingual, ¿qué dato conviene verificar?","Uso reciente de medicamentos para disfunción eréctil|Color favorito|Alimentos picantes|Lentes de contacto",0,"Algunos medicamentos pueden interactuar y causar hipotensión marcada."],
+["Durante una infusión de vancomicina presenta enrojecimiento y prurito. ¿Qué haces?","Aumentar velocidad|Valorar y actuar según protocolo, comunicar|Ignorar si no hay fiebre|Dar otra dosis",1,"Puede ser una reacción relacionada con la infusión; sigue el protocolo."],
+["Con furosemida, ¿qué controles son pertinentes?","Balance de líquidos, presión arterial y electrolitos|Color de ojos|Solo temperatura|Ninguno si es oral",0,"La diuresis puede afectar volumen, presión arterial y electrolitos."],
+["Tras usar salbutamol inhalado, ¿qué efecto puede presentarse?","Temblor o palpitaciones|Pérdida permanente de audición|Cianosis como efecto esperado|Ausencia de pulso",0,"Temblor y palpitaciones pueden aparecer; valora su intensidad."],
+["¿Qué ayuda a prevenir daño por exceso de paracetamol?","Combinar productos sin revisar componentes|Revisar otros productos que lo contengan y respetar indicación|Tomar dosis extra|Ignorar enfermedad hepática",1,"Algunos productos combinados también contienen paracetamol."],
+["¿Qué riesgo debe considerarse con los AINE?","Sangrado gastrointestinal y posible afectación renal|Mejoría renal garantizada|No interactúan con anticoagulantes|Nunca irritan el estómago",0,"Los AINE pueden aumentar riesgos gastrointestinales y renales."],
+["Tras uso prolongado de corticosteroides sistémicos, ¿qué consejo es seguro?","Suspender de golpe al mejorar|No cambiar ni suspender sin indicación clínica|Duplicar dosis olvidada|Compartirlos",1,"La suspensión abrupta puede ser riesgosa tras uso prolongado."],
+["Una tableta tiene recubrimiento entérico. ¿Qué debes hacer?","Triturarla|No triturarla; verificar alternativa apropiada|Disolverla en agua caliente|Partirla sin revisar",1,"Triturar ciertas formulaciones puede alterar la liberación del medicamento."],
+["Para un medicamento de alto riesgo, ¿qué práctica es apropiada?","Omitir verificaciones si hay prisa|Aplicar verificaciones y doble revisión cuando el protocolo lo requiera|Confiar en el color|Pedir confirmación a otro paciente",1,"Sigue las barreras de seguridad institucionales."],
+["¿Cuál es una práctica segura para identificar al paciente?","Usar al menos dos identificadores aprobados|Usar el número de habitación|Preguntar a otro paciente|Reconocer por apariencia",0,"La habitación no identifica con fiabilidad; usa identificadores aprobados."],
+["Encuentras discrepancia entre lista domiciliaria y nuevas órdenes. ¿Qué haces?","Ignorarla si está estable|Aclararla con el profesional responsable|Administrar ambos tratamientos|Eliminarla sin comunicar",1,"La conciliación busca identificar y resolver discrepancias con el equipo."],
+["Está somnoliento y tiene dificultad para tragar un medicamento oral. ¿Qué es prioritario?","Administrarlo rápido con agua|Valorar seguridad de deglución y consultar|Triturar cualquier tableta|Dejarlo en la cama",1,"Hay riesgo de aspiración; valora y consulta por una alternativa segura."],
+["¿Cómo se administra correctamente un medicamento sublingual?","Bajo la lengua, dejar disolver según instrucciones|Masticar y tragar|Colocar en el ojo|Mezclar siempre con alimentos",0,"Se coloca bajo la lengua y se deja disolver de acuerdo con las instrucciones."],
+["Al aplicar gotas oftálmicas, ¿dónde se coloca normalmente la gota?","Saco conjuntival inferior, sin tocar el ojo con la punta|Directo sobre la córnea con la punta|Solo párpado cerrado|Conducto lagrimal",0,"Evita contaminar la punta y sigue la técnica indicada."],
+["¿Qué factor ayuda a seleccionar un sitio para inyección intramuscular?","Edad, medicamento, volumen, músculo y protocolo|Solo preferencia profesional|Una marca visible|Siempre el mismo sitio",0,"La selección depende de la persona y del medicamento."],
+["Ante antecedente de anafilaxia tras vacuna, ¿qué haces antes de otra dosis?","Administrar y observar unos segundos|Verificar antecedente y consultar guía clínica|Cambiar de brazo|Ignorar si fue hace tiempo",1,"Una reacción grave previa requiere evaluación según guías vigentes."],
+["Tras un medicamento hay dificultad respiratoria e hinchazón de lengua. ¿Prioridad?","Esperar a que pase|Activar respuesta de emergencia y protocolo de anafilaxia|Ofrecer bebida|Anotarlo al final del turno",1,"Puede existir compromiso de vía aérea; requiere respuesta urgente."],
+["Dos medicamentos tienen nombres parecidos. ¿Qué reduce confusión?","Leer primeras letras|Verificar nombre completo, concentración y paciente|Guiarse por color|Elegir el más cercano",1,"Verifica nombre completo y concentración con el sistema institucional."],
+["Con función renal reducida y una nueva orden, ¿qué corresponde?","Ajustar dosis por cuenta propia|Revisar datos y aclarar dudas con prescriptor o farmacia|Administrar doble|Ignorar función renal",1,"La función renal puede afectar eliminación; ajustes corresponden al equipo autorizado."],
+["Una persona consciente con glucemia baja puede tragar con seguridad. ¿Qué acción sigue el protocolo?","Tratamiento de acción rápida indicado y reevaluación|Insulina rápida|Esperar sin valorar|Dar oral a persona inconsciente",0,"Sigue el protocolo y reevalúa; no administres vía oral si no puede tragar."],
+["¿Qué medicamento puede revertir parcialmente una sobredosis de opioides?","Naloxona|Vitamina C|Furosemida|Amoxicilina",0,"La naloxona puede revertir efectos opioides; se requiere vigilancia posterior."],
+["¿Qué instrucción es adecuada sobre un antibiótico prescrito?","Compartir sobrantes|Seguir pauta y consultar ante dudas o efectos adversos|Guardar dosis para el futuro|Cambiar frecuencia al mejorar",1,"No modifiques ni compartas la pauta; consulta al profesional ante dudas."]
+];
+const images=["syringe","blood","heart","ivbag","blood","lungs","allergy","kidney","heart","ivbag","kidney","inhaler","liver","stomach","capsule","capsule","shield","patient","clipboard","mouth","capsule","eye","syringe","vaccine","alert","search","kidney","glucose","lungs","capsule"];
+const data=raw.map((r,i)=>({q:r[0],o:r[1].split("|"),a:r[2],e:r[3],icon:images[i]}));
+const art={
+ capsule:'<g transform="rotate(-35 60 60)"><rect x="17" y="39" width="86" height="42" rx="21" fill="white" stroke="currentColor" stroke-width="5"/><path d="M60 39v42" stroke="currentColor" stroke-width="5"/><path d="M20 60a18 18 0 0 1 18-18h22v36H38a18 18 0 0 1-18-18" fill="currentColor"/></g>',
+ heart:'<path d="M60 99 23 64C1 42 32 13 60 39c28-26 59 3 37 25L60 99Z" fill="currentColor"/><path d="M15 61h23l10-17 16 34 10-17h21" fill="none" stroke="white" stroke-width="6"/>',
+ drop:'<path d="M60 10C49 32 25 54 25 73a35 35 0 0 0 70 0C95 54 71 32 60 10Z" fill="currentColor"/><path d="M44 76a17 17 0 0 0 17 17" fill="none" stroke="white" stroke-width="6"/>',
+ shield:'<path d="M60 10 99 25v29c0 25-16 42-39 56C37 96 21 79 21 54V25L60 10Z" fill="currentColor"/><path d="m41 59 13 13 27-29" fill="none" stroke="white" stroke-width="7"/>',
+ lungs:'<path d="M55 27v33C45 42 39 38 32 44 21 54 15 71 17 89c1 10 11 13 21 8 13-7 17-22 17-37M65 27v33c10-18 16-22 23-16 11 10 17 27 15 45-1 10-11 13-21 8-13-7-17-22-17-37" fill="currentColor" stroke="currentColor" stroke-width="4"/>',
+ syringe:'<g transform="rotate(-42 60 60)" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"><path d="M42 28h36v56H42zM50 14v14m20-14v14M42 84h36M60 84v20M51 40h18m-18 12h18m-18 12h18"/></g>',
+ blood:'<path d="M60 10C49 32 25 54 25 73a35 35 0 0 0 70 0C95 54 71 32 60 10Z" fill="currentColor"/><path d="M60 53v25m-12-12h24" stroke="white" stroke-width="7" stroke-linecap="round"/>',
+ ivbag:'<path d="M42 15h36v12l9 9v61H33V36l9-9V15Z" fill="white" stroke="currentColor" stroke-width="5"/><path d="M35 58h50v25H35z" fill="currentColor" opacity=".8"/><path d="M60 97v12m-5-70h10m-5 0v12" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>',
+ kidney:'<path d="M50 18C31 10 16 25 16 47c0 20 10 34 25 34 11 0 17-9 17-21V34c0-8-3-13-8-16Zm20 0c19-8 34 7 34 29 0 20-10 34-25 34-11 0-17-9-17-21V34c0-8 3-13 8-16Z" fill="currentColor"/><path d="M60 61v34" stroke="white" stroke-width="6" stroke-linecap="round"/>',
+ inhaler:'<path d="M38 20h36v55H38z" fill="white" stroke="currentColor" stroke-width="5"/><path d="M47 20v-8h18v8m-27 55h37v18H40zM77 83h19v12H77" fill="currentColor" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>',
+ liver:'<path d="M15 52c10-25 31-37 62-31 13 3 22 1 29-5 4 28-4 60-27 72-20 10-50 5-63-7-8-7-7-18-1-29Z" fill="currentColor"/><path d="M59 38c2 15 15 23 35 19" fill="none" stroke="white" stroke-width="6"/>',
+ stomach:'<path d="M51 14v33c-14-10-27 0-27 20 0 20 13 31 34 31 25 0 39-15 39-35 0-16-11-25-24-20-8 3-14-3-14-13V14H51Z" fill="currentColor"/><path d="M57 49c7 12 18 13 29 11" fill="none" stroke="white" stroke-width="6"/>',
+ patient:'<circle cx="60" cy="39" r="20" fill="currentColor"/><path d="M22 105c3-24 16-36 38-36s35 12 38 36H22Z" fill="currentColor"/><path d="M46 39h28" stroke="white" stroke-width="5" stroke-linecap="round"/>',
+ clipboard:'<rect x="28" y="18" width="64" height="88" rx="8" fill="white" stroke="currentColor" stroke-width="5"/><path d="M45 18v-6h30v6m-31 27 5 5 9-11m7 6h13m-34 20 5 5 9-11m7 6h13" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>',
+ mouth:'<path d="M17 56c13-19 29-25 43-25s30 6 43 25c-12 25-27 37-43 37S29 81 17 56Z" fill="currentColor"/><path d="M23 56h74M60 57v27" stroke="white" stroke-width="5" stroke-linecap="round"/>',
+ eye:'<path d="M9 60s18-31 51-31 51 31 51 31-18 31-51 31S9 60 9 60Z" fill="white" stroke="currentColor" stroke-width="6"/><circle cx="60" cy="60" r="17" fill="currentColor"/><circle cx="60" cy="60" r="6" fill="white"/>',
+ vaccine:'<path d="M39 32 77 70 57 90 19 52z" fill="white" stroke="currentColor" stroke-width="5"/><path d="m32 39 38 38m-27-48 38 38m-6-44 23 23M57 90l-9 16m48-67 10-10" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>',
+ alert:'<path d="M60 12 108 99H12L60 12Z" fill="currentColor"/><path d="M60 42v27" stroke="white" stroke-width="8" stroke-linecap="round"/><circle cx="60" cy="83" r="5" fill="white"/>',
+ search:'<circle cx="51" cy="49" r="27" fill="white" stroke="currentColor" stroke-width="7"/><path d="m71 70 29 29" stroke="currentColor" stroke-width="9" stroke-linecap="round"/><path d="m40 49 8 8 15-17" fill="none" stroke="currentColor" stroke-width="5"/>',
+ glucose:'<path d="M60 10C49 32 25 54 25 73a35 35 0 0 0 70 0C95 54 71 32 60 10Z" fill="currentColor"/><path d="M46 61h28m-14-14v28" stroke="white" stroke-width="6" stroke-linecap="round"/>'
+};
+let order=[],index=0,score=0,choice=null,correctChoice=null,answered=false,positionSchedule=[];
+let audioContext=null,musicTimer=null,noteIndex=0;
+const melody=[523.25,659.25,587.33,783.99,698.46,880,783.99,659.25,587.33,698.46,523.25,392];
+const $=id=>document.getElementById(id);
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function show(){
+ const d=data[order[index]];choice=null;answered=false;
+ $("counter").textContent=`Pregunta ${index+1} de 30`;$("score").textContent=`Aciertos: ${score}`;
+ $("question").textContent=d.q;$("result").textContent="";$("explanation").textContent="";
+ $("reaction").hidden=true;
+ $("check").disabled=true;$("check").hidden=false;$("next").hidden=true;
+ document.querySelector(".track").setAttribute("aria-valuenow",index+1);$("fill").style.width=`${(index+1)/30*100}%`;
+ $("image").innerHTML=`<svg viewBox="0 0 120 120"><g>${art[d.icon]}</g></svg>`;
+ const list=$("options");list.replaceChildren();
+ const correctText=d.o[d.a],distractors=shuffle(d.o.filter((_,i)=>i!==d.a));
+ correctChoice=positionSchedule[index];
+ let distractorIndex=0;
+ const options=Array.from({length:d.o.length},(_,i)=>i===correctChoice?correctText:distractors[distractorIndex++]);
+ options.forEach((text,i)=>{const b=document.createElement("button");b.className="option";b.type="button";b.setAttribute("aria-pressed","false");b.textContent=`${String.fromCharCode(65+i)}. ${text}`;b.onclick=()=>{if(answered)return;choice=i;$("check").disabled=false;[...list.children].forEach((x,n)=>x.setAttribute("aria-pressed",String(n===i)))};list.append(b)});
+}
+function check(){
+ if(choice===null||answered)return;answered=true;const d=data[order[index]];
+ [...$("options").children].forEach((b,i)=>{b.disabled=true;if(i===correctChoice)b.classList.add("correct");if(i===choice&&i!==correctChoice)b.classList.add("wrong")});
+ const isCorrect=choice===correctChoice;
+ if(isCorrect){score++;$("result").textContent="✅ ¡Correcto!";$("result").style.color="#237a3b"}else{$("result").textContent=`❌ Incorrecto. Respuesta: ${String.fromCharCode(65+correctChoice)}.`;$("result").style.color="#b42318"}
+ $("reactionCat").innerHTML=`<path d="M15 35 12 13l19 13a30 30 0 0 1 18 0l19-13-3 23c8 8 7 20-1 27-6 6-14 9-24 9s-18-3-24-9c-8-7-9-19-1-28Z" fill="#fff4e8" stroke="#568c61" stroke-width="3" stroke-linejoin="round"/><path d="M25 21Q40 6 55 21l-2 8a36 36 0 0 0-26 0Z" fill="#fff" stroke="#568c61" stroke-width="3"/><path d="M40 12v11m-5-5h10" stroke="#568c61" stroke-width="3" stroke-linecap="round"/><path d="${isCorrect?"M26 42q4-8 8 0m12 0q4-8 8 0":"M27 40h.5m19-.5h.5M25 34l9 3m12 0 9-3"}" fill="none" stroke="#302833" stroke-width="3.5" stroke-linecap="round"/><ellipse cx="22" cy="51" rx="5" ry="3" fill="#f4b4af"/><ellipse cx="58" cy="51" rx="5" ry="3" fill="#f4b4af"/><path d="m37 49 3 3 3-3Z" fill="#e58a8a" stroke="#302833" stroke-width="1.2"/><path d="${isCorrect?"M32 54q8 12 16 0":"M32 62q8-12 16 0"}" fill="none" stroke="#302833" stroke-width="2.5" stroke-linecap="round"/><path d="M24 69q16-10 32 0v12H24Z" fill="#d5ead8" stroke="#568c61" stroke-width="3"/><path d="M40 70v10m-4-5h8" stroke="#568c61" stroke-width="2.5" stroke-linecap="round"/>`;
+ $("reactionCat").setAttribute("role","img");
+ $("reactionCat").setAttribute("aria-label",isCorrect?"Gatito enfermero feliz":"Gatito enfermero animándote");
+ $("reactionText").textContent=isCorrect?"¡Correcto! ¡El gatito está feliz!":"¡Suerte para la próxima! El gatito te anima.";
+ $("reaction").hidden=false;
+ $("score").textContent=`Aciertos: ${score}`;$("explanation").textContent=d.e;$("check").hidden=true;$("next").hidden=false;$("next").focus();
+}
+function next(){index++;if(index<30){show();$("questionTitle").focus();return}
+ $("quiz").hidden=true;$("finish").hidden=false;
+ const colors=["#e76f51","#f4a261","#e9c46a","#58a66b","#5aa9e6","#b783d2","#f284b6"];
+ const card=document.createElement("div");card.className="finish-card";
+ const confetti=document.createElement("div");confetti.className="confetti";confetti.setAttribute("aria-hidden","true");
+ for(let i=0;i<36;i++){const piece=document.createElement("span");piece.className="confetti-piece";piece.style.left=`${(i*37)%100}%`;piece.style.setProperty("--piece-color",colors[i%colors.length]);piece.style.setProperty("--fall-delay",`${(i%12)*0.14}s`);piece.style.setProperty("--fall-duration",`${2.6+(i%5)*0.3}s`);piece.style.setProperty("--drift",`${((i*31)%120)-60}px`);piece.style.setProperty("--resting-top",`${(i*23)%88}%`);confetti.appendChild(piece)}
+ const content=document.createElement("div");content.className="finish-content";
+ const cat=document.createElement("div");cat.className="finish-cat";cat.innerHTML='<svg viewBox="0 0 180 180" role="img" aria-label="Gatito enfermero sonriendo y haciendo pulgar arriba"><path d="M37 74 31 37l34 21a53 53 0 0 1 36 0l34-21-6 39c13 14 12 35-1 48-11 11-27 17-48 17s-37-6-48-17c-13-13-14-34-1-50Z" fill="#fff4e8" stroke="#568c61" stroke-width="5" stroke-linejoin="round"/><path d="M55 49q35-35 70 0l-4 14a78 78 0 0 0-62 0Z" fill="#fff" stroke="#568c61" stroke-width="5"/><path d="M90 32v20m-10-10h20" stroke="#568c61" stroke-width="5" stroke-linecap="round"/><path d="M58 84q8-14 16 0m32 0q8-14 16 0" fill="none" stroke="#302833" stroke-width="5" stroke-linecap="round"/><ellipse cx="48" cy="101" rx="9" ry="6" fill="#f4b4af"/><ellipse cx="132" cy="101" rx="9" ry="6" fill="#f4b4af"/><path d="m84 96 6 6 6-6Z" fill="#e58a8a" stroke="#302833" stroke-width="2"/><path d="M76 108q14 18 28 0" fill="none" stroke="#302833" stroke-width="4" stroke-linecap="round"/><path d="M48 139q42-27 84 0v30H48Z" fill="#d5ead8" stroke="#568c61" stroke-width="5"/><path d="M90 143v20m-9-10h18" stroke="#568c61" stroke-width="4" stroke-linecap="round"/><path d="M125 148h39v20h-39Z" fill="#f3d9bd" stroke="#568c61" stroke-width="4" stroke-linejoin="round"/><path d="M131 149v-30q0-15 12-15t12 15v20q0-11 9-11t10 10v17q0 12-12 12h-23" fill="#fff4e8" stroke="#568c61" stroke-width="4" stroke-linejoin="round"/></svg>';
+ const title=document.createElement("h2");title.className="finish-title";title.textContent="🎉 ¡FELICIDADES, TERMINASTE EL RETO! 🎉";
+ const result=document.createElement("p");result.className="finish-score";result.textContent=`Puntuación: ${score} / ${data.length} (${Math.round(score/data.length*100)}%)`;
+ const message=document.createElement("p");message.className="finish-message";message.textContent="¡El gatito enfermero está orgulloso de ti! Sigue aprendiendo y cuidando con cariño. 💚";
+ const again=document.createElement("button");again.className="action finish-restart";again.textContent="Jugar de nuevo";again.onclick=start;
+ content.append(cat,title,result,message,again);card.append(confetti,content);$("finish").replaceChildren(card);again.focus();
+}
+function start(){order=shuffle([...data.keys()]);positionSchedule=shuffle(Array.from({length:30},(_,i)=>i%4));index=0;score=0;$("quiz").hidden=false;$("finish").hidden=true;show()}
+function playNote(){
+ if(!audioContext||audioContext.state!=="running")return;
+ const oscillator=audioContext.createOscillator(),gain=audioContext.createGain();
+ const now=audioContext.currentTime;
+ oscillator.type="sine";oscillator.frequency.value=melody[noteIndex++%melody.length];
+ gain.gain.setValueAtTime(0.0001,now);gain.gain.exponentialRampToValueAtTime(0.14,now+0.04);gain.gain.exponentialRampToValueAtTime(0.0001,now+0.34);
+ oscillator.connect(gain);gain.connect(audioContext.destination);oscillator.start(now);oscillator.stop(now+0.36);
+}
+function toggleMusic(){
+ if(musicTimer){clearInterval(musicTimer);musicTimer=null;$("music").textContent="🎵 Activar música";$("music").setAttribute("aria-pressed","false");$("musicStatus").textContent="Música pausada.";return}
+ const AudioContextClass=window.AudioContext||window.webkitAudioContext;
+ if(!AudioContextClass){$("musicStatus").textContent="Este navegador no admite reproducción de música.";return}
+ audioContext=audioContext||new AudioContextClass();
+ audioContext.resume().then(()=>{playNote();musicTimer=setInterval(playNote,420);$("music").textContent="🔇 Pausar música";$("music").setAttribute("aria-pressed","true");$("musicStatus").textContent="Música activada."}).catch(()=>{$("musicStatus").textContent="No se pudo iniciar el audio. Revisa los permisos del navegador."});
+}
+$("check").onclick=check;$("next").onclick=next;
+$("music").onclick=toggleMusic;
+start();
+</script>
+</body>
+</html>
